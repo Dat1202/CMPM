@@ -3,7 +3,9 @@ from models import Genre, Book, User, UserRole, Receipt, ReceiptDetails
 from bookstore import app, db
 from flask_login import current_user
 import hashlib
+
 from sqlalchemy import func
+from sqlalchemy.sql import extract
 import utils
 
 
@@ -91,14 +93,30 @@ def count_cart(cart):
     }
 
 
-# def book_stats():
-#     return Book.query.join(Book, Book.id.__eq__(Genre.id))\
-#             .add_column(func.count(Book.id)).group_by(Book.id, Book.name).all()
+def genre_stats():
+    return db.session.query(Genre.id, Genre.name, func.count(Genre.id))\
+                            .join(Book, Genre.id.__eq__(Book.theloai_id), isouter=True)\
+                            .group_by(Genre.id, Genre.name).all()
 
+def book_stats(kw=None, from_date=None, to_date=None):
+    p = db.session.query(Book.id, Book.name, func.sum(ReceiptDetails.quantity * ReceiptDetails.unit_price))\
+                         .join(ReceiptDetails, ReceiptDetails.book_id.__eq__(Book.id), isouter=True)\
+                         .join(Receipt, Receipt.id.__eq__(ReceiptDetails.receipt_id))\
+                         .group_by(Book.id, Book.name)
 
-def products_stats(kw=None, from_date=None, to_date=None):
-    p = db.session.query(Genre.id, Genre.name, func.sum(ReceiptDetails.quantity * ReceiptDetails.unit_price)\
-                         .join(ReceiptDetails, ReceiptDetails.book_id.__eq__(Genre.id), isouter=True)\
-                         .group_by(Genre.id, Genre.name))
+    if kw:
+        p = p.filter(Book.name.contains(kw))
+    if from_date:
+        p = p.filter(Receipt.created_date.__ge__(from_date))
+    if to_date:
+        p = p.filter(Receipt.created_date.__le__(to_date))
 
     return p.all()
+
+
+def book_month_stats(month):
+    return db.session.query(extract('month', Receipt.created_date),
+                            func.sum(ReceiptDetails.quantity * ReceiptDetails.unit_price))\
+                            .join(ReceiptDetails, ReceiptDetails.receipt_id.__eq__(Receipt.id))\
+                            .filter(extract('month', Receipt.created_date) == month)\
+                            .group_by(extract('month', Receipt.created_date)).all()
