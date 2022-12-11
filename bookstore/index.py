@@ -169,10 +169,6 @@ def add_to_cart():
     return jsonify(utils.count_cart(cart))
 
 
-
-
-
-
 if __name__ == '__main__':
     from bookstore.admin import *
 
