@@ -1,0 +1,30 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h1 class="text-center text-danger">Thống kê doanh thu</h1>
+
+<div class="row">
+    <div class="col-md 5 col-xs-12"></div>
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Ten</th>
+            <th>Doanh thu</th>
+        </tr>
+        {% for s in stats %}
+        <tr>
+            <td>{{ s[0] }}</td>
+            <td>{{ s[0] }}</td>
+            <td>
+                {% if s[2] %}
+                {{ ":%.1f".format(s[0]) }} VDN
+                {% else %}
+                0 VND
+                {% endif %}
+            </td>
+
+        </tr>
+    </table>
+</div>
+
+{% endblock %}
