@@ -1,8 +1,9 @@
 {% extends 'admin/base.html' %}
 
 {% block body %}
-<h1 class="text-center text-danger">Thống kê doanh thu</h1>
+{% block title %} Xem thống kê - Quản trị sách {% endblock %}
 
+<h1 class="text-center text-danger">Thống kê doanh thu theo thể loại</h1>
 <div class="row">
     <div class="col-md-5 col-sm-12">
         <table class="table">
@@ -25,22 +26,17 @@
             <div class="form-group">
                 <input type="text" class="form-control" name="kw" placeholder="Nhập từ khóa..." />
             </div>
-              <div class="form-group">
-                    <input type="number" min="1" max="12"
-                           name ="month"
-                           class="form-control"
-                           placeholder="Nhap thang"/>
-                    </div>
-                <input type="submit" value="Thống kê" class="btn btn-danger"/>
+
+              <input type="submit" value="Thống kê" class="btn btn-danger"/>
         </form>
         <form>
-
+            <canvas id="genreChartId"></canvas>
         </form>
-        <canvas id="genreChartId"></canvas>
     </div>
 </div>
 
-<div class="row">
+<h1 class="text-center" style="margin-top:150px">Thống kê doanh thu theo tháng</h1>
+<div class="row" >
     <div class="col-md-5 col-sm-12">
         <table class="table">
             <tr>
