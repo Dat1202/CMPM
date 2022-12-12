@@ -62,5 +62,3 @@ admin.add_view(AuthenticatedModelView(Genre, db.session, name="Thể loại"))
 admin.add_view(ProductView(Book, db.session, name="Sách"))
 admin.add_view(StatsView(name='Thống kê doanh thu'))
 admin.add_view(LogoutView(name='Đăng xuất'))
-
-

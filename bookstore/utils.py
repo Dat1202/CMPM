@@ -99,13 +99,13 @@ def genre_stats():
                             .group_by(Genre.id, Genre.name).all()
 
 def book_stats(kw=None, from_date=None, to_date=None):
-    p = db.session.query(Book.id, Book.name, func.sum(ReceiptDetails.quantity * ReceiptDetails.unit_price))\
-                         .join(ReceiptDetails, ReceiptDetails.book_id.__eq__(Book.id), isouter=True)\
+    p = db.session.query(Genre.id, Genre.name, func.sum(ReceiptDetails.quantity * ReceiptDetails.unit_price))\
+                         .join(ReceiptDetails, ReceiptDetails.book_id.__eq__(Genre.id), isouter=True)\
                          .join(Receipt, Receipt.id.__eq__(ReceiptDetails.receipt_id))\
-                         .group_by(Book.id, Book.name)
+                         .group_by(Genre.id, Genre.name)
 
     if kw:
-        p = p.filter(Book.name.contains(kw))
+        p = p.filter(Genre.name.contains(kw))
     if from_date:
         p = p.filter(Receipt.created_date.__ge__(from_date))
     if to_date:

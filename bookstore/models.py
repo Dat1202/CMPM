@@ -39,7 +39,6 @@ class Book(BaseModel):
     price = Column(Float, default=0)
     image = Column(String(200))
     active = Column(Boolean, default=True)
-    pubic_year = Column(Integer)
     theloai_id = Column(Integer, ForeignKey(Genre.id), nullable=False)
     receipt_details = relationship('ReceiptDetails', backref='book', lazy=True)
 
@@ -96,4 +95,3 @@ with app.app_context():
         #     db.session.add(sach)
         #
         # db.session.commit()
-

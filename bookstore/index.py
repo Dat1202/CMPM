@@ -168,6 +168,31 @@ def add_to_cart():
 
     return jsonify(utils.count_cart(cart))
 
+@app.route('/api/update-cart', methods=['put'])
+def update_cart():
+    data = request.json
+    id = str(data.get('id'))
+    quantity = data.get('quantity')
+
+    cart = session.get('cart')
+    if cart and id in cart:
+        cart[id]['quantity'] = quantity
+        session['cart'] = cart
+
+    return jsonify(utils.count_cart(cart))
+
+
+@app.route('/api/delete-cart/<book_id>', methods=['delete'])
+def delete_cart(book_id):
+    cart = session.get('cart')
+
+    if cart and book_id in cart:
+        del cart[book_id]
+        session['cart'] = cart
+
+    return jsonify(utils.count_cart(cart))
+
+
 
 if __name__ == '__main__':
     from bookstore.admin import *

@@ -1,5 +1,6 @@
 {% extends 'admin/base.html' %}
 {% block body %}
+{% block title %} Trang chủ - Quản trị sách {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/content.css')}}">
@@ -7,7 +8,7 @@
 
 {% if current_user.is_authenticated %}
 <h1 class="text-center">welcome {{ current_user.name }}</h1>
-
+<h1 class="text-center">Thống kê số sản phẩm</h1>
 <div class="row">
     <div class="col-md-5 col-sm-12">
         <table class="table">
@@ -88,4 +89,3 @@
 </div>
 {% endif %}
 {% endblock %}
-
